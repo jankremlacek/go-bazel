@@ -9,6 +9,10 @@ bazel run //:gazelle-update-repos
 ```
 
 ```sh
+bazel test //... --test_output=errors --nocache_test_results
+```
+
+```sh
 bazel build //...
 ```
 
