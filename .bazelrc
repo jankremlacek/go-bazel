@@ -1,2 +1,2 @@
-build --color=yes --verbose_failures
+build --color=yes --verbose_failures --stamp --workspace_status_command=./scripts/status.sh
 test --color=yes --test_verbose_timeout_warnings

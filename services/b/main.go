@@ -10,5 +10,6 @@ func main() {
 	defer logger.Sync()
 
 	logger.Info("b thinks:",
-		zap.Int("sum", shared.Sum(42, -21)))
+		zap.Int("sum", shared.Sum(42, -21)),
+		zap.String("version", shared.Version()))
 }
