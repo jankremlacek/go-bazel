@@ -11,6 +11,7 @@ go_test(
     name = "shared_test",
     srcs = ["shared_test.go"],
     embed = [":shared"],
+    timeout = "short",
 )
 
 alias(
