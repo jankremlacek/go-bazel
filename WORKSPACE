@@ -29,10 +29,10 @@ load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 # The first declaration of an external repository "wins".
 ############################################################
 
+# gazelle:repository go_repository name=org_golang_x_xerrors importpath=golang.org/x/xerrors
 
 go_rules_dependencies()
 
 go_register_toolchains(version = "1.19")
 
 gazelle_dependencies()
-
