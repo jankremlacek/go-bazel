@@ -1,0 +1,18 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "b_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/jankremlacek/go-bazel/services/b",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//shared",
+        "@org_uber_go_zap//:zap",
+    ],
+)
+
+go_binary(
+    name = "b",
+    embed = [":b_lib"],
+    visibility = ["//visibility:public"],
+)

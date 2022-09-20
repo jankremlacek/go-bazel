@@ -1,0 +1,20 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "shared",
+    srcs = ["shared.go"],
+    importpath = "github.com/jankremlacek/go-bazel/shared",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "shared_test",
+    srcs = ["shared_test.go"],
+    embed = [":shared"],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":shared",
+    visibility = ["//visibility:public"],
+)
