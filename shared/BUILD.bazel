@@ -2,7 +2,10 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "shared",
-    srcs = ["shared.go", "version.go"],
+    srcs = [
+        "shared.go",
+        "version.go",
+    ],
     importpath = "github.com/jankremlacek/go-bazel/shared",
     visibility = ["//visibility:public"],
     x_defs = {"version": "{STABLE_GIT_COMMIT}"},
@@ -10,9 +13,9 @@ go_library(
 
 go_test(
     name = "shared_test",
+    timeout = "short",
     srcs = ["shared_test.go"],
     embed = [":shared"],
-    timeout = "short",
 )
 
 alias(
