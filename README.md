@@ -1,5 +1,14 @@
 # go-bazel
 
+A sample scaffold golang + Bazel mono repository.
+
+## Features
+
+- Multi microservices in the mono repo
+- Single build pipeline
+
+## CLI
+
 ```sh
 bazel run //:gazelle
 ```
