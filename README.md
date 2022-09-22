@@ -6,6 +6,8 @@ A sample scaffold golang + Bazel mono repository.
 
 - Multi microservices in the mono repo
 - Single build pipeline
+- Automatic release GitHub workflow action
+    - macOS and Linux builds
 
 ## CLI
 
