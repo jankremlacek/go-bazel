@@ -64,11 +64,6 @@ jobs:
         run: |
           "${GITHUB_WORKSPACE}/bin/bazel" build //...
 
-      - name: ls build
-        run: |
-          ls "${GITHUB_WORKSPACE}/bazel-bin/services/a/service-a"
-          ls "${GITHUB_WORKSPACE}/bazel-bin/services/b/service-b"
-
       - name: Compress
         run: |
           tar czvf ${{matrix.name}}.tar.gz "${GITHUB_WORKSPACE}/bazel-bin/services/a/service-a" "${GITHUB_WORKSPACE}/bazel-bin/services/b/service-b"
