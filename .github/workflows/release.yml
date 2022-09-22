@@ -36,7 +36,7 @@ jobs:
         include:
           - target: x86_64-unknown-linux-gnu
             os: ubuntu-latest
-            name: go-bazel-linux-adm64
+            name: go-bazel-linux-amd64
 
           - target: x86_64-apple-darwin
             os: macOS-latest
