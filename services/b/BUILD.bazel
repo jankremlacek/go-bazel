@@ -13,6 +13,7 @@ go_library(
 
 go_binary(
     name = "b",
+    out = "service-b",
     embed = [":b_lib"],
     visibility = ["//visibility:public"],
 )

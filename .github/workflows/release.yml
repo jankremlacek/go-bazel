@@ -1,0 +1,102 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+
+  # Ensure that the project could be successfully compiled
+  build_check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install bazelisk
+      run: |
+        curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.14.0/bazelisk-linux-amd64"
+        mkdir -p "${GITHUB_WORKSPACE}/bin/"
+        mv bazelisk-linux-amd64 "${GITHUB_WORKSPACE}/bin/bazel"
+        chmod +x "${GITHUB_WORKSPACE}/bin/bazel"
+
+    - name: Build
+      run: |
+        "${GITHUB_WORKSPACE}/bin/bazel" build //...
+
+  # Build on Linux and macOS
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    needs: build_check
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            name: go-bazel-linux-adm64
+
+          - target: x86_64-apple-darwin
+            os: macOS-latest
+            name: go-bazel-darwin-amd64
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install bazelisk (macOS)
+        if: matrix.os == 'macOS-latest'
+        run: |
+          curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.14.0/bazelisk-darwin-amd64"
+          mkdir -p "${GITHUB_WORKSPACE}/bin/"
+          mv bazelisk-darwin-amd64 "${GITHUB_WORKSPACE}/bin/bazel"
+          chmod +x "${GITHUB_WORKSPACE}/bin/bazel"
+
+      - name: Install bazelisk (linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.14.0/bazelisk-linux-amd64"
+          mkdir -p "${GITHUB_WORKSPACE}/bin/"
+          mv bazelisk-linux-amd64 "${GITHUB_WORKSPACE}/bin/bazel"
+          chmod +x "${GITHUB_WORKSPACE}/bin/bazel"
+
+      - name: Build
+        run: |
+          "${GITHUB_WORKSPACE}/bin/bazel" build //...
+
+      - name: ls build
+        run: |
+          ls "${GITHUB_WORKSPACE}/bazel-bin/services/a/service-a" -lah
+          ls "${GITHUB_WORKSPACE}/bazel-bin/services/b/service-b" -lah
+
+      - name: Compress
+        run: |
+          tar czvf ${{matrix.name}}.tar.gz "${GITHUB_WORKSPACE}/bazel-bin/services/a/service-a" "${GITHUB_WORKSPACE}/bazel-bin/services/a/service-b"
+
+      - name: Upload the build as an artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{matrix.name}}.tar.gz
+          path: ${{matrix.name}}.tar.gz
+
+  # Release
+  release:
+    name: Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup | Artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Setup | Checksums
+        run: for file in go-bazel-*/go-bazel-*; do openssl dgst -sha256 -r "$file" | awk '{print $1}' > "${file}.sha256"; done
+
+      - name: Release | Add Artifacts to Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: go-bazel-*/go-bazel-*
+          generate_release_notes: true

@@ -16,3 +16,5 @@ gazelle(
 
 # make sure that others can import either using the import or go_default_library naming conventions
 # gazelle:go_naming_convention import_alias
+
+# gazelle:proto disable_global
