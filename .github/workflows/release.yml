@@ -81,3 +81,22 @@ jobs:
         with:
           name: ${{matrix.name}}.tar.gz
           path: ${{matrix.name}}.tar.gz
+
+  # Release
+  release:
+    name: Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup | Artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Setup | Checksums
+        run: for file in go-bazel-*/go-bazel-*; do openssl dgst -sha256 -r "$file" | awk '{print $1}' > "${file}.sha256"; done
+
+      - name: Release | Add Artifacts to Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: go-bazel-*/go-bazel-*
+          generate_release_notes: true
