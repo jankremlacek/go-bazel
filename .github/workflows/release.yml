@@ -67,10 +67,14 @@ jobs:
         run: |
           "${GITHUB_WORKSPACE}/bin/bazel" build //...
 
+      - name: ls -R
+        run: |
+          ls "${GITHUB_WORKSPACE}" -R
+
       - name: ls build
         run: |
-          ls "${GITHUB_WORKSPACE}/bazel-bin/services/a/service-a" -lah
-          ls "${GITHUB_WORKSPACE}/bazel-bin/services/b/service-b" -lah
+          ls "${GITHUB_WORKSPACE}/bazel-bin/services/a/service-a"
+          ls "${GITHUB_WORKSPACE}/bazel-bin/services/b/service-b"
 
       - name: Compress
         run: |
