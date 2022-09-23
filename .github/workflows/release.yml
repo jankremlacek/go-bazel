@@ -66,7 +66,9 @@ jobs:
 
       - name: Compress
         run: |
-          tar czvf ${{matrix.name}}.tar.gz "${GITHUB_WORKSPACE}/bazel-bin/services/a/service-a" "${GITHUB_WORKSPACE}/bazel-bin/services/b/service-b"
+          tar czvf ${{matrix.name}}.tar.gz \
+            -C "${GITHUB_WORKSPACE}/bazel-bin/services/a" "${GITHUB_WORKSPACE}/bazel-bin/services/a/service-a" \
+            -C "${GITHUB_WORKSPACE}/bazel-bin/services/b" "${GITHUB_WORKSPACE}/bazel-bin/services/b/service-b"
 
       - name: Upload the build as an artifact
         uses: actions/upload-artifact@v3
