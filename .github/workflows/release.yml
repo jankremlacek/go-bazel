@@ -69,7 +69,6 @@ jobs:
           mkdir -p "${GITHUB_WORKSPACE}/dist/"
           cp "${GITHUB_WORKSPACE}/bazel-bin/services/a/service-a" "${GITHUB_WORKSPACE}/dist/"
           cp "${GITHUB_WORKSPACE}/bazel-bin/services/b/service-b" "${GITHUB_WORKSPACE}/dist/"
-          ls "${GITHUB_WORKSPACE}/dist/"
 
       - name: Compress
         run: |
