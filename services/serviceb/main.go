@@ -9,7 +9,7 @@ func main() {
 	logger, _ := zap.NewProduction()
 	defer logger.Sync()
 
-	logger.Info("b thinks:",
+	logger.Info("serviceb says:",
 		zap.Int("sum", shared.Sum(42, -21)),
 		zap.String("version", shared.Version()))
 }

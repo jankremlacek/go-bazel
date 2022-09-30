@@ -1,9 +1,9 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 
 go_library(
-    name = "a_lib",
+    name = "serviceb_lib",
     srcs = ["main.go"],
-    importpath = "github.com/jankremlacek/go-bazel/services/a",
+    importpath = "github.com/jankremlacek/go-bazel/services/serviceb",
     visibility = ["//visibility:private"],
     deps = [
         "//shared",
@@ -12,8 +12,7 @@ go_library(
 )
 
 go_binary(
-    name = "a",
-    out = "service-a",
-    embed = [":a_lib"],
+    name = "serviceb",
+    embed = [":serviceb_lib"],
     visibility = ["//visibility:public"],
 )
