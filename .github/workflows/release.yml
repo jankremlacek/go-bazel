@@ -67,14 +67,14 @@ jobs:
       - name: Prepare the dist folder
         run: |
           mkdir -p "${GITHUB_WORKSPACE}/dist/"
-          cp "${GITHUB_WORKSPACE}/bazel-bin/services/a/service-a" "${GITHUB_WORKSPACE}/dist/"
-          cp "${GITHUB_WORKSPACE}/bazel-bin/services/b/service-b" "${GITHUB_WORKSPACE}/dist/"
+          cp "${GITHUB_WORKSPACE}/bazel-bin/services/servicea/servicea" "${GITHUB_WORKSPACE}/dist/"
+          cp "${GITHUB_WORKSPACE}/bazel-bin/services/serviceb/serviceb" "${GITHUB_WORKSPACE}/dist/"
 
       - name: Compress
         run: |
           tar czvf ${{matrix.name}}.tar.gz --directory "${GITHUB_WORKSPACE}/dist/" \
-            service-a \
-            service-b
+            servicea \
+            serviceb
 
       - name: Upload the build as an artifact
         uses: actions/upload-artifact@v3

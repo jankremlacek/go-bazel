@@ -6,13 +6,16 @@ go_library(
     importpath = "github.com/jankremlacek/go-bazel/services/serviceb",
     visibility = ["//visibility:private"],
     deps = [
-        "//shared",
+        "//proto/servicea",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//credentials/insecure",
         "@org_uber_go_zap//:zap",
     ],
 )
 
 go_binary(
     name = "serviceb",
+    out = "serviceb",
     embed = [":serviceb_lib"],
     visibility = ["//visibility:public"],
 )

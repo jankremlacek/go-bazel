@@ -2,17 +2,23 @@ load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 
 go_library(
     name = "servicea_lib",
-    srcs = ["main.go"],
+    srcs = [
+        "hander.go",
+        "main.go",
+    ],
     importpath = "github.com/jankremlacek/go-bazel/services/servicea",
     visibility = ["//visibility:private"],
     deps = [
+        "//proto/servicea",
         "//shared",
+        "@org_golang_google_grpc//:go_default_library",
         "@org_uber_go_zap//:zap",
     ],
 )
 
 go_binary(
     name = "servicea",
+    out = "servicea",
     embed = [":servicea_lib"],
     visibility = ["//visibility:public"],
 )
