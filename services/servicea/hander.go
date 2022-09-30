@@ -4,6 +4,7 @@ import (
 	"context"
 
 	pb "github.com/jankremlacek/go-bazel/proto/servicea"
+	"github.com/jankremlacek/go-bazel/shared"
 )
 
 type Handler struct {
@@ -12,7 +13,8 @@ type Handler struct {
 
 func (h *Handler) Sum(_ context.Context, rqst *pb.SumRequest) (response *pb.SumResponse, err error) {
 	response = &pb.SumResponse{
-		Result: rqst.GetA() + rqst.GetB(),
+		Result:  rqst.GetA() + rqst.GetB(),
+		Version: shared.Version(),
 	}
 	return
 }

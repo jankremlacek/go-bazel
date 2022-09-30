@@ -11,4 +11,5 @@ message SumRequest {
 
 message SumResponse {
     int32 result = 1;
+    string version = 2;
 }

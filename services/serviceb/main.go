@@ -42,5 +42,6 @@ func main() {
 	}
 
 	logger.Info("Got response",
-		zap.Int("sum", int(response.Result)))
+		zap.Int("sum", int(response.Result)),
+		zap.String("version", response.Version))
 }
