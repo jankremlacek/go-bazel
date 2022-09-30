@@ -30,9 +30,50 @@ http_archive(
     ],
 )
 
+http_archive(
+    name = "aspect_rules_js",
+    sha256 = "0707a425093704fab05fb91c3a4b62cf22dca18ea334d8a72f156d4c18e8db90",
+    strip_prefix = "rules_js-1.3.1",
+    url = "https://github.com/aspect-build/rules_js/archive/refs/tags/v1.3.1.tar.gz",
+)
+
+http_archive(
+    name = "aspect_rules_rollup",
+    sha256 = "0554230e8323ec0e81d62c4fad0aea88c1b80c91483dfa76bdf71f0ad8a8fb53",
+    strip_prefix = "rules_rollup-0.11.0",
+    url = "https://github.com/aspect-build/rules_rollup/archive/refs/tags/v0.11.0.tar.gz",
+)
+
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+
+load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")
+rules_js_dependencies()
+
+load("@rules_nodejs//nodejs:repositories.bzl", "DEFAULT_NODE_VERSION", "nodejs_register_toolchains")
+nodejs_register_toolchains(
+    name = "nodejs",
+    node_version = DEFAULT_NODE_VERSION,
+)
+
+load("@aspect_rules_js//npm:npm_import.bzl", "npm_translate_lock")
+npm_translate_lock(
+    name = "npm",
+    npm_package_lock = "//:package-lock.json",
+    package_json = "//:package.json",
+    verify_node_modules_ignored = "//:.bazelignore",
+)
+
+load("@npm//:repositories.bzl", "npm_repositories")
+npm_repositories()
+
+load("@aspect_rules_rollup//rollup:repositories.bzl", "LATEST_VERSION", "rollup_register_toolchains")
+rollup_register_toolchains(
+    name = "rollup",
+    # TODO: use the same rollup version from package.json
+    rollup_version = LATEST_VERSION,
+)
 
 ############################################################
 # Define your own dependencies here using go_repository.
