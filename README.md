@@ -33,16 +33,16 @@ bazel build //...
 
 ### Step 3: Run to see the result
 
-In one terminal, run the grpc serving `ServiceB`:
-
-```sh
-bazel run services/serviceb :42042
-```
-
-In another terminal, run the client `ServiceA`:
+In one terminal, run the grpc serving `ServiceA`:
 
 ```sh
 bazel run services/servicea :42042
+```
+
+In another terminal, run the client `ServiceB`:
+
+```sh
+bazel run services/serviceb :42042
 ```
 
 You should see the result. Protobuf + grpc built, services binaries built as well.
@@ -66,7 +66,7 @@ Until solved, the workaround is:
 - Manually copy generated implementation back to the `proto/[service]` directory:
 
   ```sh
-  cp ./bazel-bin/proto/[service]/[service]_go_proto_/github.com/kikotxyz/babykktd/proto/[service]/*.pb.go ./proto/[service]/
+  cp ./bazel-bin/proto/[service]/[service]_go_proto_/github.com/jankremlacek/go-bazel/proto/[service]/*.pb.go ./proto/[service]/
   ```
 
 - Also, you have to exclude the copied file from the Bazel build. Create file `/proto/[service]/.bazelignore` and put there all generated `[filename].pb.go` files.
